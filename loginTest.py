@@ -11,6 +11,7 @@ loginUrl = 'http://elite.nju.edu.cn/jiaowu/'
 loginDoUrl = "http://elite.nju.edu.cn/jiaowu/login.do"
 loginHostUrl = 'elite.nju.edu.cn'
 loginReferer = "http://elite.nju.edu.cn/jiaowu/exit.do"
+indexUrl = 'http://elite.nju.edu.cn/jiaowu/student/studentinfo/index.do'
 
 head = {
         'Upgrade-Insesure-Requests': '1',
@@ -30,7 +31,7 @@ def createPostContent(Url):
     # 找到验证码图片地址
     Source = startSoup.find('img', attrs={'id': 'ValidateImg'})['src']
     # 下载验证码图片
-    pic = requests.get(
+    pic = loginSession.get(
         Url + Source).content
     with open('validateImg.png', 'wb') as f:
         f.write(pic)
@@ -49,7 +50,7 @@ data = createPostContent(loginUrl)
 # 模拟登录教务系统
 loginSession.post(loginDoUrl, data = data, headers = head)
 print(loginSession.cookies)
-test = loginSession.get(loginDoUrl)
+test = loginSession.get(indexUrl)
 
 #获取登录后页面信息
 print(loginSession.cookies)
